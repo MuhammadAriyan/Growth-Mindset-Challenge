@@ -15,7 +15,7 @@ st.markdown("""
 
 
 st.markdown(""" <h1 style="display: flex; align-items: center; gap: 10px;">
-            <span class="material-symbols-outlined" style="font-size:50px;">account_tree</span> Data Sweeper</h1>"""
+            <span class="material-symbols-outlined" style="font-size:50px;"></span> Data Sweeper</h1>"""
             , unsafe_allow_html=True)
 
 st.write('Transform your files between CSV and Excel formats with built-in data cleaning and visualization')
@@ -88,14 +88,14 @@ if upload_files:
         
         # create a visualization
         st.markdown(""" <h2 style=`display: flex; align-items: center; gap: 10px;">
-            <span class="material-symbols-outlined">finance</span> Data Visulization</h2>"""
+            <span class="material-symbols-outlined"></span> Data Visulization</h2>"""
             , unsafe_allow_html=True)
         if st.checkbox(f"Show Visualization for {file.name}"):
             st.bar_chart(df.select_dtypes(include='number').iloc[:,:2])
             
         # conversion option
         st.markdown(""" <h2 style=`display: flex; align-items: center; gap: 10px;">
-            <span class="material-symbols-outlined">sync</span>Conversion Options</h2>"""
+            <span class="material-symbols-outlined"></span>Conversion Options</h2>"""
             , unsafe_allow_html=True)
         
         conversion_type = st.radio(f"Convert {file.name} to:",["CSV","EXCEL"],key=file.name)
@@ -116,7 +116,7 @@ if upload_files:
 
         st.markdown(f"""
         <h2 style="display: flex; align-items: center; gap: 10px;">
-        <span class="material-symbols-outlined">download</span> Download {file.name} as {conversion_type}
+        <span class="material-symbols-outlined"></span> Download {file.name} as {conversion_type}
         </h2>
         """, unsafe_allow_html=True)
         
