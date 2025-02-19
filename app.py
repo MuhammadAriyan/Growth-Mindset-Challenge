@@ -3,8 +3,6 @@ import os
 from io import BytesIO
 import streamlit as st
 import pandas as pd
-from pandas_profiling import ProfileReport
-
 
 # set up of my app
 st.set_page_config(page_title='Data Sweeper', layout='wide')
