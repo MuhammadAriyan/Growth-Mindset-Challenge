@@ -3,22 +3,31 @@ import os
 from io import BytesIO
 import streamlit as st
 import pandas as pd
+from mistralai import Mistral
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # set up of my app
 st.set_page_config(page_title='Data Sweeper', layout='wide')
 
+data = {
+    "Name":['luffy','cr7','claudie'],
+    "Age":[17,None,56]
+}
+
+df0 = pd.DataFrame(data)
+csv = df0.to_csv(index=False)
 # Mark down
-st.markdown("""
-    <link rel="stylesheet" 
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL,GRAD@400,0,0" />
-""", unsafe_allow_html=True)
-
-
-st.markdown(""" <h1 style="display: flex; align-items: center; gap: 10px;">
-            <span class="material-symbols-outlined" style="font-size:50px;"></span> Data Sweeper</h1>"""
-            , unsafe_allow_html=True)
-
-st.write('Transform your files between CSV and Excel formats with built-in data cleaning and visualization')
+st.title('Data Sweeper ❄')
+st.subheader('Want a dummy file? ✨') 
+st.download_button(
+    label='Download 🍃',
+    data=csv,
+    file_name='people.csv',
+    mime='text/csv'
+)
+st.write('Transform your files between CSV and Excel formats with built-in data cleaning and visualization 🍁')
 
 # file uploader
 upload_files = st.file_uploader(
@@ -56,7 +65,7 @@ if upload_files:
         # file info
         st.write(f"**File Name:** {file.name}")
         st.write(f"**File Size:** {file.size/1024} MB")
-        
+
         # show 5 rows of our df
         st.write("Preview the head of Dataframe")
         # head from pd returns 5 rows from the top
@@ -87,16 +96,31 @@ if upload_files:
         df = df[columns]
         
         # create a visualization
-        st.markdown(""" <h2 style=`display: flex; align-items: center; gap: 10px;">
-            <span class="material-symbols-outlined"></span> Data Visulization</h2>"""
-            , unsafe_allow_html=True)
+        st.subheader('Data Visulization 📉')
         if st.checkbox(f"Show Visualization for {file.name}"):
             st.bar_chart(df.select_dtypes(include='number').iloc[:,:2])
+        
+        st.subheader('Generate a summary 🍂')
+        
+        if st.button(f'Generate summary about {file.name}'):
+            api_key = os.getenv('api_key')
+            model = 'mistral-large-latest'
             
+            client = Mistral(api_key=api_key)
+            
+            chat_response = client.chat.complete(
+                model=model,
+                messages= [
+                    {
+                        "role":'user',
+                        "content": f"Give a fun yet professional summary of '{file.name}' in 4-5 lines. Keep it simple, avoid fancy words, and make it engaging with emojis. Use bullet points to highlight key stats. No bold text, just keep it clean and easy to read. Here’s the data: {df}"
+  }
+                ]
+            )
+            
+            st.text(chat_response.choices[0].message.content)
         # conversion option
-        st.markdown(""" <h2 style=`display: flex; align-items: center; gap: 10px;">
-            <span class="material-symbols-outlined"></span>Conversion Options</h2>"""
-            , unsafe_allow_html=True)
+        st.subheader('Conversion Options 🔃')
         
         conversion_type = st.radio(f"Convert {file.name} to:",["CSV","EXCEL"],key=file.name)
         
@@ -114,12 +138,7 @@ if upload_files:
             
         buffer.seek(0)
 
-        st.markdown(f"""
-        <h2 style="display: flex; align-items: center; gap: 10px;">
-        <span class="material-symbols-outlined"></span> Download {file.name} as {conversion_type}
-        </h2>
-        """, unsafe_allow_html=True)
-        
+        st.subheader(f"Download {file.name} as {conversion_type} 🌊")
         # download button
         if st.download_button(
         label=f"⬇️ Download {file.name} as {conversion_type}", 
