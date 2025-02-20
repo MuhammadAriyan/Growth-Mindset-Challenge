@@ -63,7 +63,7 @@ if upload_files:
         
         # file info
         st.write(f"**File Name:** {file.name}")
-        st.write(f"**File Size:** {file.size/1024} MB")
+        st.write(f"**File Size:** {file.size / 1_048_576:.6f} MB")
 
         # show 5 rows of our df
         st.write("Preview the head of Dataframe")
