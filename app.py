@@ -20,9 +20,8 @@ df0 = pd.DataFrame(data)
 csv = df0.to_csv(index=False)
 # Mark down
 st.title('Data Sweeper ❄')
-st.subheader('Want a dummy file? ✨') 
 st.download_button(
-    label='Download 🍃',
+    label='Want a dummy file? 🎇',
     data=csv,
     file_name='people.csv',
     mime='text/csv'
